@@ -23,3 +23,10 @@
 cmake_minimum_required (VERSION 3.0)
 project (cmocka_template)
 add_subdirectory(src)
+
+# cmocka
+option(ENABLE_TESTS "Perform unit tests after build" OFF)
+if (ENABLE_TESTS)
+  find_package(CMocka REQUIRED)
+  enable_testing()
+endif(ENABLE_TESTS)
