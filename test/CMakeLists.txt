@@ -22,3 +22,5 @@
 
 add_mocked_test(program ${CMAKE_SOURCE_DIR}/src/module.c)
 add_mocked_test(module)
+set(link_flags "-Wl,--wrap=printf")
+set_target_properties(test_program PROPERTIES LINK_FLAGS "${link_flags}")
