@@ -20,18 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cmake_minimum_required (VERSION 3.0)
-project (cmocka_template)
-add_subdirectory(src)
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
-
-# cmocka
-option(ENABLE_TESTS "Perform unit tests after build" OFF)
-if (ENABLE_TESTS)
-  find_package(CMocka CONFIG REQUIRED)
-  include(AddCMockaTest)
-  include(AddMockedTest)
-  add_subdirectory(test)
-  enable_testing()
-endif(ENABLE_TESTS)
+## \function add_mocked_test
+#  \brief Add unit test with mocking support
+#  \param name unit test name (excluding extension and 'test_' prefix)
+#  \param objects optional list of objects to include in test module
+function(add_mocked_test name)
+  add_cmocka_test(test_${name}
+                  SOURCES test_${name}.c ${ARGN}
+                  COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
+                  LINK_LIBRARIES ${CMOCKA_LIBRARIES})
+  target_include_directories(test_${name} PRIVATE ${CMAKE_SOURCE_DIR}/src)
+endfunction(add_mocked_test)
