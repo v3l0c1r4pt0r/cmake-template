@@ -21,8 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include <stdarg.h>
+#include <stddef.h>
+#include <limits.h>
+#include <setjmp.h>
+#include <cmocka.h>
+
+#define main __real_main
+#include "program.c"
+#undef main
+
+typedef struct {int a; int b; int expected;} vector_t;
+
+const vector_t vectors[] = {
+  {0,1,0},
+  {1,0,0},
+  {1,1,1},
+  {2,3,6},
+};
+
+static void test_internal(void **state)
+{
+    int actual;
+    int i;
+
+    for (i = 0; i < sizeof(vectors)/sizeof(vector_t); i++)
+    {
+      /* get i-th inputs and expected values as vector */
+      const vector_t *vector = &vectors[i];
+
+      /* call function under test */
+      actual = internal(vector->a, vector->b);
+
+      /* assert result */
+      assert_int_equal(vector->expected, actual);
+    }
+}
 
 int main()
 {
-  return 0;
+  const struct CMUnitTest tests[] = {
+    cmocka_unit_test(test_internal),
+  };
+
+  return cmocka_run_group_tests(tests, NULL, NULL);
 }
