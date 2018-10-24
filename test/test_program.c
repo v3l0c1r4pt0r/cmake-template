@@ -40,6 +40,24 @@ const vector_t vectors[] = {
   {2,3,6},
 };
 
+int __wrap_printf (const char *format, ...)
+{
+  int param1;
+
+  /* extract result from vargs ('printf("%d\n", result)') */
+  va_list args;
+  va_start(args, format);
+  param1 = va_arg(args, int);
+  va_end(args);
+
+  /* ensure that parameters match expecteds in expect_*() calls  */
+  check_expected_ptr(format);
+  check_expected(param1);
+
+  /* get mocked return value from will_return() call */
+  return mock();
+}
+
 static void test_internal(void **state)
 {
     int actual;
@@ -58,10 +76,30 @@ static void test_internal(void **state)
     }
 }
 
+static void test_main(void **state)
+{
+  int expected = 0;
+  int actual;
+
+  /* expect parameters to printf call */
+  expect_string(__wrap_printf, format, "%d\n");
+  expect_value(__wrap_printf, param1, 60);
+
+  /* printf should return 3 */
+  will_return(__wrap_printf, 3);
+
+  /* call __real_main as this is main() from program.c */
+  actual = __real_main(0, NULL);
+
+  /* assert that main return success */
+  assert_int_equal(expected, actual);
+}
+
 int main()
 {
   const struct CMUnitTest tests[] = {
     cmocka_unit_test(test_internal),
+    cmocka_unit_test(test_main),
   };
 
   return cmocka_run_group_tests(tests, NULL, NULL);
