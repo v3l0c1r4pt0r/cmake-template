@@ -20,7 +20,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_mocked_test(program ${CMAKE_SOURCE_DIR}/src/module.c)
+add_mocked_test(program SOURCES ${CMAKE_SOURCE_DIR}/src/module.c MOCKS printf)
 add_mocked_test(module)
-set(link_flags "-Wl,--wrap=printf")
-set_target_properties(test_program PROPERTIES LINK_FLAGS "${link_flags}")
