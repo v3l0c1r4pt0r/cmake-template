@@ -1,6 +1,6 @@
 # cmake-template
 
-Simple C program built by CMake
+Simple C program built by CMake with getopt-based CLI interface
 
 ## Project structure
 
