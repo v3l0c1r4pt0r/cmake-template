@@ -4,7 +4,7 @@
 # Copyright (c) 2018      Anderson Toshiyuki Sasaki <ansasaki@redhat.com>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
-# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+# For details see the accompanying COPYING-ADD-CMOCKA-TEST file.
 
 #.rst:
 # AddCMockaTest
