@@ -16,3 +16,5 @@ Simple C program built by CMake
 * **cmocka** branch - same as cmake plus unit tests and mocking with help of
   cmocka framework
 * **getopt** branch - same as cmake plus CLI interface using `getopt()` function
+* **install** branch - same as cmake plus allows to install program via `make
+  install`
